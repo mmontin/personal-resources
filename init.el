@@ -34,7 +34,7 @@
 	   (Highlight-parentheses-colors '("red")))
   :diminish)
 
-;; Splitting vertically by default 
+;; Splitting vertically by default
 (setq split-width-threshold 0)
 
 ;; Using doom-vibrant as default theme
