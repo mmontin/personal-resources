@@ -9,6 +9,8 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
+(global-display-line-numbers-mode 1)
+
 ;; Ensures all packages are kept up to date
 (use-package auto-package-update
   :config
@@ -62,13 +64,6 @@
 ;; Haskell mode for .hs files
 (use-package haskell-mode
   :mode "\\.hs")
-
-;; Linum mode is autoloaded for agda and haskell
-;; Other hooks could be added when needed but making
-;; it global seems a bit too much
-(use-package linum
-  :hook ((agda2-mode . linum-mode)
-	 (haskell-mode . linum-mode)))
 
 ;; This is required to use the :diminish idiom in use-packages
 ;; which hides some packages in the lower emacs bar
