@@ -1,0 +1,49 @@
+format = "$directory$git_branch$git_commit$git_state$git_metrics$git_status$fill$haskell$nix_shell\n$jobs$character\n"
+
+[character]
+error_symbol = "[](bold red)"
+success_symbol = ""
+
+[directory]
+home_symbol = " "
+read_only = "  "
+repo_root_style = "bold white"
+style = "fg:#aaaaaa"
+truncation_length = 5
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = " "
+
+[git_status]
+ahead = " "
+behind = " "
+conflicted = ""
+deleted = " $count "
+diverged = " "
+format = "[$all_status$ahead_behind]($style)"
+modified = " $count "
+renamed = " $count "
+staged = " $count "
+stashed = " $count "
+style = "bold purple"
+untracked = " "
+up_to_date = ""
+
+[haskell]
+format = "[$symbol($version )]($style)"
+style = "fg:#5e5086"
+symbol = " "
+
+[jobs]
+symbol = " "
+
+[nix_shell]
+format = "[$symbol$state]($style)"
+impure_msg = "impure"
+pure_msg = "pure"
+style = "fg:#719efa bold"
+symbol = " "
+
+[package]
+symbol = " "
