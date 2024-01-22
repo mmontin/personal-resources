@@ -9,7 +9,31 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
+;; Always display line numbers
 (global-display-line-numbers-mode 1)
+
+;; Always start emacs full screen
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+;; Searches and loads agda-mode
+(load-file (let ((coding-system-for-read 'utf-8))
+                (shell-command-to-string "agda-mode locate")))
+
+;; This allows the documentation to be displayed in minibuffer by default
+;; or in a dedicated buffer when it is visible
+(defun my/eldoc-display-in-buffer-or-minibuffer (&rest args)
+  (apply
+   (if (and eldoc--doc-buffer
+            (seq-some (lambda (w) (eq (window-buffer w) eldoc--doc-buffer)) (window-list)))
+       'eldoc-display-in-buffer
+     'eldoc-display-in-echo-area)
+   args))
+
+(setq eldoc-display-functions '(my/eldoc-display-in-buffer-or-minibuffer))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Below everything is handled by yse-package ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Ensures all packages are kept up to date
 (use-package auto-package-update
@@ -17,16 +41,6 @@
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
-
-;; Loads agda-mode
-(load-file (let ((coding-system-for-read 'utf-8))
-                (shell-command-to-string "agda-mode locate")))
-
-;; Auto-completion for Agda and ELisp
-(use-package auto-complete
-  :config (ac-config-default)
-  :hook (agda2-mode
-	 emacs-lisp-mode))
 
 ;; Highlightning current and inner parentheses
 (use-package highlight-parentheses
@@ -81,10 +95,10 @@
 ;; buffers coming for language servers
 (use-package markdown-mode)
 
-;; Completion for haskell mode using company. Maybe
-;; I should start to use it globally instead of auto-complete
+;; Using company for Haskell, agda and lisp.
+;; Will possibly become global in the futur
 (use-package company
-  :hook (haskell-mode . company-mode))
+  :hook ((haskell-mode agda2-mode emacs-lisp-mode) . company-mode))
 
 ;; Client for language servers, used for hls in this case.
 ;; This looks for a wrappers if any, and falls off to hls otherwise
@@ -104,18 +118,6 @@
   (let ((hls (if (executable-find "haskell-language-server-wrapper") "haskell-language-server-wrapper" "haskell-language-server")))
     (add-to-list 'eglot-server-programs `(haskell-mode ,hls "--lsp")))
   )
-
-;; This allows the documentation to be displayed in minibuffer by default
-;; or in a dedicated buffer when it is visible
-(defun my/eldoc-display-in-buffer-or-minibuffer (&rest args)
-  (apply
-   (if (and eldoc--doc-buffer
-            (seq-some (lambda (w) (eq (window-buffer w) eldoc--doc-buffer)) (window-list)))
-       'eldoc-display-in-buffer
-     'eldoc-display-in-echo-area)
-   args))
-
-(setq eldoc-display-functions '(my/eldoc-display-in-buffer-or-minibuffer))
 
 ;; This limits the number of buffers dired uses to a single one
 ;; Never quite understood why this is not the default behaviours
