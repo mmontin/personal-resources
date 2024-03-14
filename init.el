@@ -12,6 +12,9 @@
 ;; Always display line numbers
 (global-display-line-numbers-mode 1)
 
+;; Always refresh buffers when their content changes on disk
+(global-auto-revert-mode t)
+
 ;; Always start emacs full screen
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
