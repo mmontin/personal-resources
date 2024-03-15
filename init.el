@@ -116,10 +116,13 @@
 	      ("C-e f" . xref-go-forward)
 	      ("C-e n" . flymake-goto-next-error)
 	      ("C-e p" . flymake-goto-prev-error)
+	      ("C-e a" . eglot-code-actions)
+	      ("C-e r" . eglot-rename)
 	      )
   :config
   (let ((hls (if (executable-find "haskell-language-server-wrapper") "haskell-language-server-wrapper" "haskell-language-server")))
     (add-to-list 'eglot-server-programs `(haskell-mode ,hls "--lsp")))
+  :custom (eglot-confirm-server-initiated-edits nil)
   )
 
 ;; This limits the number of buffers dired uses to a single one
