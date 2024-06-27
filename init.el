@@ -12,6 +12,9 @@
 ;; Always display line numbers
 (global-display-line-numbers-mode 1)
 
+;; Always set fill size to be 80 chars
+(setq-default fill-column 80)
+
 ;; Always refresh buffers when their content changes on disk
 (global-auto-revert-mode t)
 
