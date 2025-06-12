@@ -21,22 +21,6 @@
 ;; Always start emacs full screen
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-;; Searches and loads agda-mode
-(load-file (let ((coding-system-for-read 'utf-8))
-                (shell-command-to-string "agda-mode locate")))
-
-;; This allows the documentation to be displayed in minibuffer by default
-;; or in a dedicated buffer when it is visible
-(defun my/eldoc-display-in-buffer-or-minibuffer (&rest args)
-  (apply
-   (if (and eldoc--doc-buffer
-            (seq-some (lambda (w) (eq (window-buffer w) eldoc--doc-buffer)) (window-list)))
-       'eldoc-display-in-buffer
-     'eldoc-display-in-echo-area)
-   args))
-
-(setq eldoc-display-functions '(my/eldoc-display-in-buffer-or-minibuffer))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Below everything is handled by yse-package ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -94,14 +78,14 @@
 ;; where unicode is supported by default
 (use-package fira-code-mode
   :config (global-fira-code-mode)
-  :custom (fira-code-mode-disabled-ligatures '("x"))
+  :custom (fira-code-mode-disabled-ligatures '("x" "[]"))
   :diminish)
 
 ;; Markdown for .md files. This is especially useful for documentation
 ;; buffers coming for language servers
 (use-package markdown-mode)
 
-;; Using company for Haskell, agda and lisp.
+;; Using company for Haskell and lisp.
 ;; Will possibly become global in the futur
 (use-package company
   :hook ((haskell-mode agda2-mode emacs-lisp-mode) . company-mode))
@@ -128,9 +112,7 @@
   :custom (eglot-confirm-server-initiated-edits nil)
   )
 
-;; This limits the number of buffers dired uses to a single one
-;; Never quite understood why this is not the default behaviours
-(use-package dired-single)
+(use-package magit-section)
 
 ;; A simple mode for nix files.
 (use-package nix-mode

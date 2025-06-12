@@ -1,8 +1,8 @@
 format = "$directory$git_branch$git_commit$git_state$git_metrics$git_status$fill$haskell$nix_shell\n$jobs$character\n"
 
 [character]
-error_symbol = "[](bold red)"
-success_symbol = ""
+success_symbol = ""
+error_symbol = "[](bold red)"
 
 [directory]
 home_symbol = " "
@@ -16,8 +16,8 @@ truncation_symbol = "…/"
 symbol = " "
 
 [git_status]
-ahead = " "
-behind = " "
+ahead = " "
+behind = " "
 conflicted = ""
 deleted = " $count "
 diverged = " "
@@ -46,4 +46,4 @@ style = "fg:#719efa bold"
 symbol = " "
 
 [package]
-symbol = " "
+symbol = " "
