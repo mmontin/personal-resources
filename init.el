@@ -21,6 +21,11 @@
 ;; Always start emacs full screen
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+;; Load agda-mode
+(if (executable-find "agda")
+    (load-file (let ((coding-system-for-read 'utf-8)) (shell-command-to-string "agda --emacs-mode locate")))
+    ())
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Below everything is handled by yse-package ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -101,6 +106,7 @@
 	      ("C-e d" . xref-find-definitions)
 	      ("C-e b" . xref-go-back)
 	      ("C-e f" . xref-go-forward)
+	      ("C-e i" . xref-find-references)
 	      ("C-e n" . flymake-goto-next-error)
 	      ("C-e p" . flymake-goto-prev-error)
 	      ("C-e a" . eglot-code-actions)
@@ -108,8 +114,9 @@
 	      )
   :config
   (let ((hls (if (executable-find "haskell-language-server-wrapper") "haskell-language-server-wrapper" "haskell-language-server")))
-    (add-to-list 'eglot-server-programs `(haskell-mode ,hls "--lsp")))
+    (add-to-list 'eglot-server-programs `(haskell-mode, hls "--lsp")))
   :custom (eglot-confirm-server-initiated-edits nil)
+  :custom (eglot-ignored-server-capabilities '(:inlayHintProvider))
   )
 
 (use-package magit-section)
