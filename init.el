@@ -27,7 +27,7 @@
     ())
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Below everything is handled by yse-package ;;
+;; Below everything is handled by use-package ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Ensures all packages are kept up to date
