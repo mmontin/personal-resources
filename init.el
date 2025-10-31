@@ -23,7 +23,7 @@
 
 ;; Load agda-mode
 (if (executable-find "agda")
-    (load-file (let ((coding-system-for-read 'utf-8)) (shell-command-to-string "agda --emacs-mode locate")))
+    (load-file (let ((coding-system-for-read 'utf-8)) (shell-command-to-string "agda-mode locate")))
     ())
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -124,3 +124,27 @@
 ;; A simple mode for nix files.
 (use-package nix-mode
   :mode "\\.nix\\'")
+
+(use-package typst-ts-mode
+  :custom
+  (typst-ts-watch-options "--open")
+  (typst-ts-mode-grammar-location (expand-file-name "tree-sitter/libtree-sitter-typst.so" user-emacs-directory))
+  (typst-ts-mode-enable-raw-blocks-highlight t)
+  :config
+  (keymap-set typst-ts-mode-map "C-c C-c" #'typst-ts-tmenu)
+  :mode "\\.typ\\'")
+
+(setq my/profile-options `(("Disable"     ())
+                           ("Definitions" ("--profile=definitions"))
+                           ("Modules"     ("--profile=modules"))
+                           ("Internal"    ("--profile=internal"))))
+
+(defun my/agda2-set-profile (name profile)
+  "Set the Agda profiler used by agda2-mode interactively."
+  (interactive (assoc (completing-read "Choose an Agda profiler mode" my/profile-options
+                                       '(lambda (x) 't) 't) my/profile-options))
+  (setq agda2-program-args profile)
+  (agda2-restart))
+
+(with-eval-after-load 'agda2-mode
+  (define-key agda2-mode-map (kbd "C-c C-x C-p") 'my/agda2-set-profile))
