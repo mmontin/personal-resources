@@ -26,6 +26,22 @@
     (load-file (let ((coding-system-for-read 'utf-8)) (shell-command-to-string "agda-mode locate")))
     ())
 
+;; Below is useful to get some profiling when using Agda tactics
+(setq my/profile-options `(("Disable"     ())
+                           ("Definitions" ("--profile=definitions"))
+                           ("Modules"     ("--profile=modules"))
+                           ("Internal"    ("--profile=internal"))))
+
+(defun my/agda2-set-profile (name profile)
+  "Set the Agda profiler used by agda2-mode interactively."
+  (interactive (assoc (completing-read "Choose an Agda profiler mode" my/profile-options
+                                       '(lambda (x) 't) 't) my/profile-options))
+  (setq agda2-program-args profile)
+  (agda2-restart))
+
+(with-eval-after-load 'agda2-mode
+  (define-key agda2-mode-map (kbd "C-c C-x C-p") 'my/agda2-set-profile))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Below everything is handled by use-package ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -119,8 +135,6 @@
   :custom (eglot-ignored-server-capabilities '(:inlayHintProvider))
   )
 
-(use-package magit-section)
-
 ;; A simple mode for nix files.
 (use-package nix-mode
   :mode "\\.nix\\'")
@@ -133,18 +147,3 @@
   :config
   (keymap-set typst-ts-mode-map "C-c C-c" #'typst-ts-tmenu)
   :mode "\\.typ\\'")
-
-(setq my/profile-options `(("Disable"     ())
-                           ("Definitions" ("--profile=definitions"))
-                           ("Modules"     ("--profile=modules"))
-                           ("Internal"    ("--profile=internal"))))
-
-(defun my/agda2-set-profile (name profile)
-  "Set the Agda profiler used by agda2-mode interactively."
-  (interactive (assoc (completing-read "Choose an Agda profiler mode" my/profile-options
-                                       '(lambda (x) 't) 't) my/profile-options))
-  (setq agda2-program-args profile)
-  (agda2-restart))
-
-(with-eval-after-load 'agda2-mode
-  (define-key agda2-mode-map (kbd "C-c C-x C-p") 'my/agda2-set-profile))
