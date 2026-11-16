@@ -139,6 +139,7 @@
 (use-package nix-mode
   :mode "\\.nix\\'")
 
+;; A simple mode for typst files (an alternative to Latex)
 (use-package typst-ts-mode
   :custom
   (typst-ts-watch-options "--open")
@@ -147,3 +148,15 @@
   :config
   (keymap-set typst-ts-mode-map "C-c C-c" #'typst-ts-tmenu)
   :mode "\\.typ\\'")
+
+;; Using copilot in emacs
+(use-package copilot
+  :ensure t
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . copilot-accept-completion)
+              ("TAB" . copilot-accept-completion)
+              ("C-<tab>" . copilot-accept-completion-by-word)
+              ("C-TAB" . copilot-accept-completion-by-word)
+              ("C-n" . copilot-next-completion)
+              ("C-p" . copilot-previous-completion)))
